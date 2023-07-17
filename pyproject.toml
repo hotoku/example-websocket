@@ -9,7 +9,7 @@ packages = [{include = "example_websocket"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-websocket = "^0.2.1"
+websockets = "^11.0.3"
 
 
 [build-system]
