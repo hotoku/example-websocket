@@ -18,9 +18,6 @@ window.addEventListener("DOMContentLoaded", () => {
   const board = document.querySelector(".board");
   createBoard(board);
   const websocket = new WebSocket("ws://localhost:8002");
-  setTimeout(() => {
-    websocket.send("ghijk");
-  }, 1000);
   sendMoves(board, websocket);
   console.log(`DOMContentLoaded`);
 });
