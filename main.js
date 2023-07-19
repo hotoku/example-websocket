@@ -14,6 +14,7 @@ function initGame(websocket) {
     } else {
       // First player starts a new game.
     }
+    console.log(`initGame: sending ${JSON.stringify(event)}`);
     websocket.send(JSON.stringify(event));
   });
 }
@@ -77,6 +78,7 @@ window.addEventListener("DOMContentLoaded", () => {
   createBoard(board);
   // Open the WebSocket connection and register event handlers.
   const websocket = new WebSocket("ws://localhost:8001/");
+  console.log(`DOMContentLoaded`);
   initGame(websocket);
   receiveMoves(board, websocket);
   sendMoves(board, websocket);
