@@ -3,11 +3,24 @@
 import asyncio
 import json
 import secrets
+import logging
 
 import websockets
 
 from connect4 import PLAYER1, PLAYER2, Connect4
 
+LOGGER = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.DEBUG
+)
+
+
+def supress_websockets_logging():
+    l = logging.getLogger("websockets.server")
+    l.setLevel(logging.INFO)
+
+
+supress_websockets_logging()
 
 JOIN = {}
 
@@ -168,6 +181,7 @@ async def handler(websocket):
     # Receive and parse the "init" event from the UI.
     message = await websocket.recv()
     event = json.loads(message)
+    LOGGER.debug(f"handler: received {event}")
     assert event["type"] == "init"
 
     if "join" in event:
