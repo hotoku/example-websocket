@@ -7,6 +7,7 @@ function showMessage(message) {
 function receiveMessage(board, websocket) {
   websocket.addEventListener("message", ({ data }) => {
     const event = JSON.parse(data);
+    console.log("receiveMessage: received", event);
     switch (event.type) {
       case "play":
         playMove(board, event.player, event.column, event.row);
