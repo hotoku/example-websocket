@@ -1,6 +1,33 @@
 # example-websocket
 Example project of websocket app
 
+# 起動方法
+
+`poetry shell`で仮想環境に入っておく。
+
+## webサーバー
+
+```shell
+python -m http.server
+```
+
+## アプリサーバー
+
+```shell
+python app2.py
+```
+
+### watchする場合
+
+```shell
+watchmedo shell-command --patterns="*.py" --command='./run.sh'
+```
+
+watchmedoで`*.py`のファイル変更を検知できる
+
+- 再起動する際に前のプロセスを殺してくれないので、run.shの中で殺している
+- 初回に起動したときに自動で起動してくれないので、`touch *.py`などを実行して明示的にファイルを変更させる
+
 # メモ
 
 ```javascript

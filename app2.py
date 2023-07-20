@@ -21,6 +21,9 @@ async def handler(websocket: ws.WebSocketServerProtocol):
             message = await websocket.recv()
             ret = game.play(json.loads(message))
             await websocket.send(json.dumps(ret))
+            winner = game.judge()
+            if winner:
+                await websocket.send(json.dumps(game.win(winner)))
         except RuntimeError as e:
             await websocket.send(json.dumps({
                 "type": "error",
