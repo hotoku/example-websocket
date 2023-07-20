@@ -17,7 +17,15 @@ logging.getLogger("websockets.server").setLevel(logging.WARNING)
 async def handler(websocket: ws.WebSocketServerProtocol):
     game = Connect4()
     while True:
-        message = await websocket.recv()
+        try:
+            message = await websocket.recv()
+            ret = game.play(json.loads(message))
+            await websocket.send(json.dumps(ret))
+        except RuntimeError as e:
+            await websocket.send(json.dumps({
+                "type": "error",
+                "message": repr(e)
+            }))
 
 
 async def main():
