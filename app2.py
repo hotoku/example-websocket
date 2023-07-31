@@ -2,10 +2,9 @@ import asyncio
 import json
 import logging
 
-from websockets.exceptions import ConnectionClosedOK
 import websockets.server as ws
 
-from connect4 import PLAYER1, PLAYER2, Connect4
+from connect4 import Connect4
 
 LOGGER = logging.getLogger(__name__)
 logging.basicConfig(
