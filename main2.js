@@ -24,6 +24,13 @@ function receiveMessage(board, websocket) {
   });
 }
 
+function initGame(websocket) {
+  websocket.addEventListener("open", () => {
+    const event = { type: "init" };
+    websocket.send(JSON.stringify(event));
+  });
+}
+
 function sendMoves(board, websocket) {
   board.addEventListener("click", ({ target }) => {
     const column = target.dataset.column;
@@ -42,6 +49,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const board = document.querySelector(".board");
   createBoard(board);
   const websocket = new WebSocket("ws://localhost:8002");
+  initGame(websocket);
   sendMoves(board, websocket);
   receiveMessage(board, websocket);
   console.log(`DOMContentLoaded`);
