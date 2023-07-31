@@ -12,6 +12,9 @@ python = "^3.10"
 websockets = "^11.0.3"
 
 
+[tool.poetry.group.dev.dependencies]
+watchdog = {extras = ["watchmedo"], version = "^3.0.0"}
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

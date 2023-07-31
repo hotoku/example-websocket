@@ -1,6 +1,7 @@
 import asyncio
 import json
 import logging
+import secrets
 
 from websockets.exceptions import ConnectionClosedOK
 import websockets.server as ws
@@ -13,19 +14,33 @@ logging.basicConfig(
 )
 logging.getLogger("websockets.server").setLevel(logging.WARNING)
 
+JOIN = {}
+
+
+async def start(websocket: ws.WebSocketServerProtocol):
+    game = Connect4()
+    connected = {websocket}
+
+    join_key = secrets.token_urlsafe(12)
+    JOIN[join_key] = game, connected
+    try:
+        event = {
+            "type": "init",
+            "join": join_key
+        }
+        await websocket.send(json.dumps(event))
+        LOGGER.info("first player started game", id(game))
+        async for message in websocket:
+            print("first player sent", message)
+    finally:
+        del JOIN[join_key]
+
 
 async def handler(websocket: ws.WebSocketServerProtocol):
-    game = Connect4()
-    while True:
-        try:
-            message = await websocket.recv()
-            ret = game.play(json.loads(message))
-            await websocket.send(json.dumps(ret))
-        except RuntimeError as e:
-            await websocket.send(json.dumps({
-                "type": "error",
-                "message": repr(e)
-            }))
+    message = await websocket.recv()
+    event = json.loads(message)
+    assert event["type"] == "init"
+    await start(websocket)
 
 
 async def main():

@@ -9,6 +9,9 @@ function receiveMessage(board, websocket) {
     const event = JSON.parse(data);
     console.log("receiveMessage: received", event);
     switch (event.type) {
+      case "init":
+        document.querySelector(".join").href = "?join=" + event.join;
+        break;
       case "play":
         playMove(board, event.player, event.column, event.row);
         break;
