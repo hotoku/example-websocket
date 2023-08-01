@@ -57,8 +57,12 @@ async def play(websocket: ws.WebSocketServerProtocol, game: Connect4, player: st
             await ws.send(json.dumps(ret))
         winner = game.judge()
         if winner:
+            win = {
+                "type": "win",
+                "player": winner
+            }
             for ws in connected:
-                await ws.send(json.dumps(ret))
+                await ws.send(json.dumps(win))
     except Exception as e:
         await error(websocket, str(e))
 
