@@ -14,13 +14,13 @@ python -m http.server
 ## アプリサーバー
 
 ```shell
-python app2.py
+python app.py
 ```
 
 ### watchする場合
 
 ```shell
-watchmedo shell-command --patterns="*.py" --command='./run.sh'
+watchmedo shell-command --patterns="*.py" --command='./run.sh' --recursive .
 ```
 
 watchmedoで`*.py`のファイル変更を検知できる
@@ -51,7 +51,7 @@ watchmedoで`*.py`のファイル変更を検知できる
 # メモ: connect4.jsのなかみ
 
 - `createBoard(board)`で要素を作る
-  - `board`は、`main2.js`から渡されるDOMのelement
+  - `board`は、`main.js`から渡されるDOMのelement
     - `.board`で選択されている
   - `createBoard`の中で、`board`の子要素として`div.column`を7個作成
     - さらに、`div.column`の子要素として`div.cell`を6個作成
