@@ -7,6 +7,8 @@ LOGGER = logging.getLogger(__name__)
 PLAYER1 = "red"
 PLAYER2 = "yellow"
 
+Player = Literal["red"] | Literal["yellow"]
+
 
 class Connect4:
     rownum = 6
@@ -21,9 +23,11 @@ class Connect4:
         ]
         self.currentPlayer = PLAYER1
 
-    def play(self, msg: dict[str, Any]) -> dict[str, Any]:
+    def play(self, msg: dict[str, Any], player: Player) -> dict[str, Any]:
         if msg.get("type") != "play":
             raise RuntimeError(f"unsupported type: {msg.get('type')}")
+        if player != self.currentPlayer:
+            raise RuntimeError("it is not your turn")
         col = msg["column"]
         row = self.find_bottom(col)
         self.board[col][row] = self.currentPlayer
@@ -61,19 +65,14 @@ class Connect4:
     def judge1(self, player: str) -> bool:
         for r in range(self.rownum):
             for c in range(self.colnum):
-                LOGGER.debug("trial 1")
                 ret1 = self.dfs(player, c, r, 0, 1, 1)
-                LOGGER.debug("trial 2")
                 ret2 = self.dfs(player, c, r, 1, 0, 1)
-                LOGGER.debug("trial 3")
                 ret3 = self.dfs(player, c, r, 1, 1, 1)
                 if ret1 or ret2 or ret3:
                     return True
         return False
 
     def dfs(self, player: str, col: int, row: int, dcol: int, drow: int, depth: int) -> bool:
-        LOGGER.debug(
-            f"col={col}, row={row}, dcol={dcol}, drow={drow}, depth={depth}")
         try:
             if col == self.colnum or row == self.rownum:
                 return False

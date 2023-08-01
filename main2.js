@@ -29,7 +29,11 @@ function receiveMessage(board, websocket) {
 
 function initGame(websocket) {
   websocket.addEventListener("open", () => {
+    const params = new URLSearchParams(window.location.search);
     const event = { type: "init" };
+    if (params.has("join")) {
+      event.join = params.get("join");
+    }
     websocket.send(JSON.stringify(event));
   });
 }
