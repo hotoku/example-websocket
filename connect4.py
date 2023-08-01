@@ -7,8 +7,6 @@ LOGGER = logging.getLogger(__name__)
 PLAYER1 = "red"
 PLAYER2 = "yellow"
 
-Player = Literal["red"] | Literal["yellow"]
-
 
 class Connect4:
     rownum = 6
@@ -22,8 +20,9 @@ class Connect4:
             for _ in range(self.colnum)
         ]
         self.currentPlayer = PLAYER1
+        self.history = []
 
-    def play(self, msg: dict[str, Any], player: Player) -> dict[str, Any]:
+    def play(self, msg: dict[str, Any], player: str) -> dict[str, Any]:
         if msg.get("type") != "play":
             raise RuntimeError(f"unsupported type: {msg.get('type')}")
         if player != self.currentPlayer:
@@ -37,6 +36,7 @@ class Connect4:
             "column": col,
             "row": row
         }
+        self.history.append(ret)
         self.switch_player()
         return ret
 

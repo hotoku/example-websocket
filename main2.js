@@ -1,4 +1,4 @@
-import { createBoard, playMove } from "./connect4.js";
+import { fillBoard, clearBoard, initBoard, playMove } from "./connect4.js";
 
 function showMessage(message) {
   setTimeout(() => alert(message), 50);
@@ -20,6 +20,11 @@ function receiveMessage(board, websocket) {
         break;
       case "error":
         showMessage(event.message);
+        break;
+      case "board":
+        console.log("handling board", event);
+        clearBoard(board);
+        fillBoard(board, event.moves);
         break;
       default:
         throw new Error(`Unsupported event type: ${event.type}.`);
@@ -52,9 +57,14 @@ function sendMoves(board, websocket) {
   });
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+function findBoadNode() {
   const board = document.querySelector(".board");
-  createBoard(board);
+  return board;
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const board = findBoadNode();
+  initBoard(board);
   const websocket = new WebSocket("ws://localhost:8002");
   initGame(websocket);
   sendMoves(board, websocket);

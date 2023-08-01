@@ -71,6 +71,11 @@ async def join(websocket: ws.WebSocketServerProtocol, join_key: str):
         return
 
     connected.add(websocket)
+    event = {
+        "type": "board",
+        "moves": game.history
+    }
+    await websocket.send(json.dumps(event))
     try:
         LOGGER.info("second player joined game %s", id(game))
         while True:

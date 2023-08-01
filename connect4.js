@@ -3,11 +3,6 @@ const PLAYER1 = "red";
 const PLAYER2 = "yellow";
 
 function createBoard(board) {
-  // Inject stylesheet.
-  const linkElement = document.createElement("link");
-  linkElement.href = import.meta.url.replace(".js", ".css");
-  linkElement.rel = "stylesheet";
-  document.head.append(linkElement);
   // Generate board.
   for (let column = 0; column < 7; column++) {
     const columnElement = document.createElement("div");
@@ -21,6 +16,15 @@ function createBoard(board) {
     }
     board.append(columnElement);
   }
+}
+
+function initBoard(board) {
+  // Inject stylesheet.
+  const linkElement = document.createElement("link");
+  linkElement.href = import.meta.url.replace(".js", ".css");
+  linkElement.rel = "stylesheet";
+  document.head.append(linkElement);
+  createBoard(board);
 }
 
 function playMove(board, player, column, row) {
@@ -42,4 +46,17 @@ function playMove(board, player, column, row) {
   }
 }
 
-export { PLAYER1, PLAYER2, createBoard, playMove };
+function clearBoard(board) {
+  for (let i = 0; i < 7; i++) {
+    board.removeChild(board.childNodes[0]);
+  }
+  createBoard(board);
+}
+
+function fillBoard(board, moves) {
+  for (const move of moves) {
+    playMove(board, move.player, move.column, move.row);
+  }
+}
+
+export { PLAYER1, PLAYER2, initBoard, clearBoard, playMove, fillBoard };
